@@ -110,11 +110,11 @@ const testcomics = (src,link)=>{
 const testHero =(name, detail, image)=>{
     return(
         <MDBContainer style={{display:'flex', alignItems:'center', justifyContent:'center', width:'100%'}} >
-            <MDBCard className="card-body" style={{ width: "22rem", margin: "1rem" }}>
+            <MDBCard className="card-body" style={{ margin: "1rem 0" }}>
                 <MDBMedia style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap'}}>
                     <MDBMedia style={{width:'200px', height:'200px'}} object src={image} alt="" />
-                    <MDBMedia body>
-                        <MDBMedia heading>
+                    <MDBMedia body style={{ textAlign: 'justify', padding: '0.5rem'}}>
+                        <MDBMedia heading style={{ fontSize: '2rem', fontWeight: 'bold'}} >
                             {name}
                         </MDBMedia>
                         {detail}

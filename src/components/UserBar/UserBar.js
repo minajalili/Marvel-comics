@@ -10,7 +10,7 @@ export default function UserBar() {
     return (
         <div  >
             <MDBContainer style={{display:'flex', alignItems:'center', justifyContent:'center', width:'100%'}} >
-                <MDBCard className="card-body" style={{ width: "22rem", marginTop: "1rem" }}>
+                <MDBCard className="card-body" style={{ width: "22rem", marginTop: "1rem" ,display:'flex', alignItems:'center', justifyContent:'center',  flexWrap:'wrap'}}>
                     <MDBCardTitle>
                         welcom!
                     </MDBCardTitle>
