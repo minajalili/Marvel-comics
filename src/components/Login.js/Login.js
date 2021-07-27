@@ -1,11 +1,17 @@
 import React, { Component } from 'react'
+import { Redirect, withRouter } from 'react-router-dom'
 import * as Yup from "yup"
 import { Formik, Form } from "formik"
-import FormikControl from './FormikControl'
+import FormikControl from './Form/FormikControl'
+import Authentication from '../Authentication/Authentication'
 
 import './Login.css'
 
-export default class Login extends Component {
+class Login extends Component {
+    constructor(props){
+        super(props)
+        this.onSubmit = this.onSubmit.bind(this)
+    }
     state={
         validationSchema :  Yup.object({
             email:Yup.string().email("invalid email format").required("required"),
@@ -14,23 +20,37 @@ export default class Login extends Component {
         initialValues : {
             email:'',
             password : ''
-        }
+        },
+        user:[],
+        redirect:false
+    }
+    redirect(){
+        this.setState({
+            redirect: true
+        })
     }
     onSubmit(value){
-        console.log("data form", value)
+        //console.log("data form", value)
         const{email, password} = value
-        console.log(email, password)
-        // if(Authentication(email,password)){
-        //     console.log("good")
-        //     setAuth(true)
-            
-        // }else{
-        //     console.log("wrong")
-        //     setAuth(false)
-        // }
-         }
+        //console.log(email, password)
+        const [user]=Authentication(email, password)
+        console.log('resfds', user)
+        if(user){
+            this.setState({ 
+                user:user,
+                redirect: true
+            })
+            this.props.history.replace('/');            
+        }
+        
+        
+        
+    }
 
     render() {
+        // if (this.state.redirect) {
+            
+        // }
         return (
             <Formik 
              initialValues= {this.state.initialValues} 
@@ -61,3 +81,4 @@ export default class Login extends Component {
         )
     }
 }
+export default withRouter(Login)

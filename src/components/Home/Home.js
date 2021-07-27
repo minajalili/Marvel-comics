@@ -1,19 +1,20 @@
 import md5 from 'md5'
 import React, { Component } from 'react'
+import { Redirect, withRouter } from 'react-router-dom'
 import axios from '../../API/AxiosUrls'
-import { MDBContainer, MDBMedia, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBBtn } from 'mdbreact';
+import { MDBContainer, MDBMedia, MDBCard } from 'mdbreact';
 
 import UserBar from '../UserBar/UserBar'
 
 
-export default class Home extends Component {
+class Home extends Component {
     state={
         comicsRes:[],
         characterRes:[],
         apiInfo:'characters/'
     }
     componentDidMount(){
-        this.fetchComics(this.state.apiInfo)
+        //this.fetchComics(this.state.apiInfo)
         
         
     }
@@ -114,7 +115,7 @@ const testHero =(name, detail, image)=>{
                 <MDBMedia style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap'}}>
                     <MDBMedia style={{width:'200px', height:'200px'}} object src={image} alt="" />
                     <MDBMedia body style={{ textAlign: 'justify', padding: '0.5rem'}}>
-                        <MDBMedia heading style={{ fontSize: '2rem', fontWeight: 'bold'}} >
+                        <MDBMedia heading style={{ textAlign: 'center',fontSize: '2rem', fontWeight: 'bold'}} >
                             {name}
                         </MDBMedia>
                         {detail}
@@ -124,3 +125,4 @@ const testHero =(name, detail, image)=>{
         </MDBContainer>
     )
 }
+export default withRouter(Home)

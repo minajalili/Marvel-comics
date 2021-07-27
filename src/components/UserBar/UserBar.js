@@ -1,5 +1,4 @@
 import React from 'react'
-import { InputGroup, Form, Accordion, Card, Modal, Button } from 'react-bootstrap';
 import { MDBCard, MDBCardTitle, MDBCardText, MDBContainer, MDBIcon } from 'mdbreact';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -18,7 +17,7 @@ export default function UserBar() {
                         this is your pannel
                     </MDBCardText>
                     <div className="flex-row">
-                    <a href="#!">
+                    <a href="/logout">
                         <MDBIcon icon="sign-out-alt" />
                         logout
                     </a>
