@@ -1,7 +1,8 @@
 import md5 from 'md5'
 import React, { Component } from 'react'
-import { Redirect, withRouter } from 'react-router-dom'
 import axios from '../../API/AxiosUrls'
+import { connect } from 'react-redux'
+import * as actionsCreators from '../store/Actions/index'
 import { MDBContainer, MDBMedia, MDBCard } from 'mdbreact';
 
 import UserBar from '../UserBar/UserBar'
@@ -14,7 +15,13 @@ class Home extends Component {
         apiInfo:'characters/'
     }
     componentDidMount(){
-        //this.fetchComics(this.state.apiInfo)
+        const userRes = JSON.parse( localStorage.getItem('user'))
+        if(userRes !== '' && userRes !== null){
+            this.props.history.replace('/');            
+        }else{
+            this.props.history.replace('/login')
+        }
+        this.fetchComics(this.state.apiInfo)
         
         
     }
@@ -28,16 +35,15 @@ class Home extends Component {
         const hash = md5(ts+api_privet_key+api_public_key);
 
         // api details
-        const heroId = '1011299'
+        const heroId = this.props.userData.heroId? this.props.userData.heroId:'1011299'
         const heroUrl = url+`${heroId}?ts=${ts}&apikey=${api_public_key}&hash=${hash}`
         
         let Character = []
         let comics =[]
         
-        //fetch character details
+        //fetch character detail
         axios.get(heroUrl)
         .then(Response=>{
-            console.log(Response.data.data.results)
             Response.data.data.results.map((res)=>{
                         return Character.push({
                             'name':res.name,
@@ -45,7 +51,6 @@ class Home extends Component {
                             'image':res.thumbnail.path+'/clean.jpg'
                         })
                     })
-                    console.log(Character, typeof Character)
         })
 
         //fetch character's comics
@@ -54,15 +59,12 @@ class Home extends Component {
 
         axios.get(comicUrl)
         .then(Response=>{
-            console.log(Response.data.data.results)
             Response.data.data.results.map((res)=>{
                 return comics.push({
                     'image':res.images[0].path+'/clean.jpg',
                     'link':res.urls[0].url
                 })
             })
-            console.log(comics, typeof comics)
-
             this.setState({
                 comicsRes: comics,
                 characterRes: Character,
@@ -87,8 +89,8 @@ class Home extends Component {
                 }
                 <div style={{display:'flex', alignItems:'center', justifyContent:'center', width:'100%', flexWrap:'wrap'}} >
                 {
-                this.state.comicsRes.map(item=>{
-                    return testcomics(item.image, item.link)
+                this.state.comicsRes.map((item, i)=>{
+                        return testcomics(item.image, item.link, i)
                 })
                 }
                 </div>
@@ -98,11 +100,11 @@ class Home extends Component {
         )
     }
 }
-const testcomics = (src,link)=>{
+const testcomics = (src,link, i)=>{
    return(   
-        <MDBCard style={{margin:'1rem', padding:'0.5rem'}}>
-            <a href={link}>
-                <img style={{width:'200px', height:'auto'}} src={src} alt="" />
+        <MDBCard key={i} style={{margin:'1rem', padding:'0.5rem'}}>
+            <a key={i+1000} target="_blank" href={link} rel="noreferrer">
+                <img key={i+2000} style={{width:'200px', height:'auto'}} src={src} alt="" />
             </a>
             
         </MDBCard>  
@@ -110,7 +112,7 @@ const testcomics = (src,link)=>{
 }
 const testHero =(name, detail, image)=>{
     return(
-        <MDBContainer style={{display:'flex', alignItems:'center', justifyContent:'center', width:'100%'}} >
+        <MDBContainer key={name} style={{display:'flex', alignItems:'center', justifyContent:'center', width:'100%'}} >
             <MDBCard className="card-body" style={{ margin: "1rem 0" }}>
                 <MDBMedia style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap'}}>
                     <MDBMedia style={{width:'200px', height:'200px'}} object src={image} alt="" />
@@ -125,4 +127,19 @@ const testHero =(name, detail, image)=>{
         </MDBContainer>
     )
 }
-export default withRouter(Home)
+const mapStateToProps = state => {
+    return {
+        userData: state.auth.user
+    };
+}
+const mapDispatchToProps = dispatch => {
+
+    return {
+
+        login: (user) => dispatch(
+            actionsCreators.login(user)
+        )
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

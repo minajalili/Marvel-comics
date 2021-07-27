@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { Redirect, withRouter } from 'react-router-dom'
+import { Redirect} from 'react-router-dom'
+import axios from '../../API/AxiosLogin'
 import * as Yup from "yup"
 import { Formik, Form } from "formik"
+import { connect } from 'react-redux'
+import * as actionsCreators from '../store/Actions/index'
 import FormikControl from './Form/FormikControl'
-import Authentication from '../Authentication/Authentication'
 
 import './Login.css'
 
@@ -24,33 +26,49 @@ class Login extends Component {
         user:[],
         redirect:false
     }
+    componentDidMount() {
+        const userRes = JSON.parse( localStorage.getItem('user'))
+        if(userRes !== '' && userRes !== null){
+            this.props.history.replace('/');
+            this.setState({ redirect: true })
+        }
+        
+    }
+    
     redirect(){
         this.setState({
             redirect: true
         })
+        this.props.history.replace('/');
+    }
+    fetch(email, password){
+        axios.get()
+        .then(response => {
+            if (response.data) {
+                 response.data.map(item=>{
+                    if(item.email===email && item.password==password){
+                        localStorage.setItem('user', JSON.stringify(item.heroId))
+                        return this.props.login(item).then(this.redirect())                        
+                    }
+                })
+                
+            }
+            
+        })
+        .catch(error => {
+            console.log(error);
+            
+        });
     }
     onSubmit(value){
-        //console.log("data form", value)
         const{email, password} = value
-        //console.log(email, password)
-        const [user]=Authentication(email, password)
-        console.log('resfds', user)
-        if(user){
-            this.setState({ 
-                user:user,
-                redirect: true
-            })
-            this.props.history.replace('/');            
-        }
-        
-        
-        
+        this.fetch(email, password) 
     }
 
     render() {
-        // if (this.state.redirect) {
-            
-        // }
+        if (this.state.redirect) {
+            return <Redirect to='/' />;
+        }
         return (
             <Formik 
              initialValues= {this.state.initialValues} 
@@ -81,4 +99,20 @@ class Login extends Component {
         )
     }
 }
-export default withRouter(Login)
+const mapStateToProps = state => {
+    return {
+        isLogin: state.auth.isLogin,
+        userData:state.auth.user
+    };
+}
+const mapDispatchToProps = dispatch => {
+
+    return {
+
+        login: (user) => dispatch(
+            actionsCreators.login(user)
+        )
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

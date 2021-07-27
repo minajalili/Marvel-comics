@@ -1,17 +1,18 @@
 import React from 'react'
 import { MDBCard, MDBCardTitle, MDBCardText, MDBContainer, MDBIcon } from 'mdbreact';
-
+import { connect } from 'react-redux'
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
 
-export default function UserBar() {
+function UserBar(props) {
     return (
         <div  >
             <MDBContainer style={{display:'flex', alignItems:'center', justifyContent:'center', width:'100%'}} >
                 <MDBCard className="card-body" style={{ width: "22rem", marginTop: "1rem" ,display:'flex', alignItems:'center', justifyContent:'center',  flexWrap:'wrap'}}>
                     <MDBCardTitle>
-                        welcom!
+                        welcom   
+                        <span style={{fontWeight:'bold',padding:'5px'}}>{ props.userData.user }</span> !
                     </MDBCardTitle>
                     <MDBCardText>
                         this is your pannel
@@ -33,3 +34,10 @@ export default function UserBar() {
         </div>
     )
 }
+const mapStateToProps = state => {
+    return {
+        userData: state.auth.user
+    };
+}
+
+export default connect(mapStateToProps)(UserBar)

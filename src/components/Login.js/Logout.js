@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import * as actionsCreators from '../store/Actions/index'
 
-export default class logout extends Component {
+class logout extends Component {
     state = { 
         redirect: false
     }
     componentDidMount() {
         localStorage.removeItem('user');
-        //this.props.logout();
+        this.props.logout();
         this.setState({ redirect: true });
     }
     render() {
@@ -22,3 +24,15 @@ export default class logout extends Component {
     }
 }
 
+const mapDispatchToProps = dispatch => {
+
+    return {
+
+        logout: () => dispatch(
+            actionsCreators.logout()
+        ),
+
+    };
+}
+
+export default connect(null, mapDispatchToProps)(logout);
