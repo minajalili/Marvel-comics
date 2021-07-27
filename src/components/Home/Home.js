@@ -1,6 +1,9 @@
 import md5 from 'md5'
 import React, { Component } from 'react'
 import axios from '../../API/AxiosUrls'
+import { MDBContainer, MDBMedia, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBBtn } from 'mdbreact';
+
+import UserBar from '../UserBar/UserBar'
 
 
 export default class Home extends Component {
@@ -26,13 +29,11 @@ export default class Home extends Component {
         // api details
         const heroId = '1011299'
         const heroUrl = url+`${heroId}?ts=${ts}&apikey=${api_public_key}&hash=${hash}`
-        //url+=`${heroId}?ts=${ts}&apikey=${api_public_key}&hash=${hash}`
         
         let Character = []
         let comics =[]
         
         //fetch character details
-
         axios.get(heroUrl)
         .then(Response=>{
             console.log(Response.data.data.results)
@@ -47,8 +48,6 @@ export default class Home extends Component {
         })
 
         //fetch character's comics
-        
-        //url = `${heroId}/comics?orderBy=-modified&limit=5&ts=${ts}&apikey=${api_public_key}&hash=${hash}`
         const comicUrl = url + 
         `${heroId}/comics?orderBy=-modified&limit=5&ts=${ts}&apikey=${api_public_key}&hash=${hash}`
 
@@ -79,15 +78,19 @@ export default class Home extends Component {
         
         return (
             <div>
-                
-                    {/* {testHero(this.state.characterRes.name, this.state.characterRes.detail, this.state.characterRes.image)} */
-                        this.state.characterRes.map(item=>{
-                            return testHero(item.name, item.description, item.image)
-                        })
-                    }
-                    {this.state.comicsRes.map(item=>{
-                       return testcomics(item.image, item.link)
-                    })}
+                <UserBar/>
+                {
+                    this.state.characterRes.map(item=>{
+                        return testHero(item.name, item.description, item.image)
+                    })
+                }
+                <div style={{display:'flex', alignItems:'center', justifyContent:'center', width:'100%', flexWrap:'wrap'}} >
+                {
+                this.state.comicsRes.map(item=>{
+                    return testcomics(item.image, item.link)
+                })
+                }
+                </div>
                 
                 
             </div>
@@ -95,16 +98,29 @@ export default class Home extends Component {
     }
 }
 const testcomics = (src,link)=>{
-   return(
-        <a style={{margin:'1rem'}} href={link} target="_blank">
-            <img style={{width:'100px', height:'100px'}} src={src} alt="" />
-        </a>
+   return(   
+        <MDBCard style={{margin:'1rem', padding:'0.5rem'}}>
+            <a href={link}>
+                <img style={{width:'200px', height:'auto'}} src={src} alt="" />
+            </a>
+            
+        </MDBCard>  
     )
 }
 const testHero =(name, detail, image)=>{
-    return(<div>
-        <h1>{name}</h1>
-        <p>{detail}</p>
-        <img style={{width:'200px', height:'200px'}} src={image} alt="" />
-    </div>)
+    return(
+        <MDBContainer style={{display:'flex', alignItems:'center', justifyContent:'center', width:'100%'}} >
+            <MDBCard className="card-body" style={{ width: "22rem", margin: "1rem" }}>
+                <MDBMedia style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap'}}>
+                    <MDBMedia style={{width:'200px', height:'200px'}} object src={image} alt="" />
+                    <MDBMedia body>
+                        <MDBMedia heading>
+                            {name}
+                        </MDBMedia>
+                        {detail}
+                    </MDBMedia>
+                </MDBMedia>
+            </MDBCard>
+        </MDBContainer>
+    )
 }
