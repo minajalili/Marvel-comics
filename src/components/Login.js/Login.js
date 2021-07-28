@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Redirect} from 'react-router-dom'
 import axios from '../../API/AxiosLogin'
 import * as Yup from "yup"
@@ -6,6 +6,8 @@ import { Formik, Form } from "formik"
 import { connect } from 'react-redux'
 import * as actionsCreators from '../store/Actions/index'
 import FormikControl from './Form/FormikControl'
+import { Modal, Button } from 'react-bootstrap';
+
 
 import './Login.css'
 
@@ -24,7 +26,9 @@ class Login extends Component {
             password : ''
         },
         user:[],
-        redirect:false
+        redirect:false,
+        showerrorText: false,
+        errorText: '',
     }
     componentDidMount() {
         const userRes = JSON.parse( localStorage.getItem('user'))
@@ -34,7 +38,11 @@ class Login extends Component {
         }
         
     }
-    
+    componentWillUnmount() {
+        this.setState = (state,callback)=>{
+            return;
+        };
+    }
     redirect(){
         this.setState({
             redirect: true
@@ -57,12 +65,21 @@ class Login extends Component {
         })
         .catch(error => {
             console.log(error);
+            this.setState({ showerrorText: true, errorText: error.message })
             
         });
     }
     onSubmit(value){
         const{email, password} = value
         this.fetch(email, password) 
+        if(!this.state.redirect){
+            setTimeout(
+                ()=>this.setState({ 
+                    showerrorText: true, 
+                    errorText: "Could not authenticate you! try again" 
+                }),3000)
+            
+        }
     }
 
     render() {
@@ -70,32 +87,45 @@ class Login extends Component {
             return <Redirect to='/' />;
         }
         return (
-            <Formik 
-             initialValues= {this.state.initialValues} 
-             validationSchema={this.state.validationSchema} 
-             onSubmit={this.onSubmit} >
-                {
-                    formik => {
-                        return (
-                            <Form className="login__from" >
-                                <FormikControl
-                                    control ="input"
-                                    type="email"
-                                    label="Email"
-                                    name="email" />
-                                <FormikControl
-                                    control ="input"
-                                    type="password"
-                                    label="password"
-                                    name="password" />
-                                <button 
-                                    type="submit" 
-                                    disabled={!formik.isValid}
-                                    className="login__form--btn" > sumbit </button>
-                            </Form>
-                        )
-                }}
-            </Formik>
+            <Fragment>
+                <Formik 
+                initialValues= {this.state.initialValues} 
+                validationSchema={this.state.validationSchema} 
+                onSubmit={this.onSubmit} >
+                    {
+                        formik => {
+                            return (
+                                <Form className="login__from" >
+                                    <FormikControl
+                                        control ="input"
+                                        type="email"
+                                        label="Email"
+                                        name="email" />
+                                    <FormikControl
+                                        control ="input"
+                                        type="password"
+                                        label="password"
+                                        name="password" />
+                                    <button 
+                                        type="submit" 
+                                        disabled={!formik.isValid}
+                                        className="login__form--btn" > sumbit </button>
+                                </Form>
+                            )
+                    }}
+                </Formik>
+                <Modal show={this.state.showerrorText} onHide={() => this.setState({ showerrorText: false })}>
+                <Modal.Header closeButton className="modalheader">
+                    <Modal.Title>Error</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="modalbody"> {this.state.errorText}</Modal.Body>
+                <Modal.Footer>
+                    <Button  className="btnM" onClick={() => this.setState({ showerrorText: false })}>
+                        close
+                    </Button>
+                </Modal.Footer>
+                </Modal>
+            </Fragment>
         )
     }
 }
@@ -103,7 +133,7 @@ const mapStateToProps = state => {
     return {
         isLogin: state.auth.isLogin,
         userData:state.auth.user
-    };
+    }
 }
 const mapDispatchToProps = dispatch => {
 
@@ -112,7 +142,7 @@ const mapDispatchToProps = dispatch => {
         login: (user) => dispatch(
             actionsCreators.login(user)
         )
-    };
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
