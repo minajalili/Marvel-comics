@@ -1,0 +1,36 @@
+.comics{
+    margin: 1rem;
+    padding: 0.5rem;
+}
+.comics--img{
+    width: 200px;
+    height: auto;
+}
+.hero{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.hero__body{
+    margin: 1rem 0px;
+}
+.hero__media{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.hero--img{
+    width: 200px;
+    height: 200px;
+}
+.hero__media__body{
+    text-align: justify;
+    padding: 0.5rem;
+}
+.hero__media--heading{
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+}

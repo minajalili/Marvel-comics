@@ -6,7 +6,7 @@ import { Formik, Form } from "formik"
 import { connect } from 'react-redux'
 import * as actionsCreators from '../store/Actions/index'
 import FormikControl from './Form/FormikControl'
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap'
 
 
 import './Login.css'
@@ -77,7 +77,7 @@ class Login extends Component {
                 ()=>this.setState({ 
                     showerrorText: true, 
                     errorText: "Could not authenticate you! try again" 
-                }),3000)
+                }),5000)
             
         }
     }

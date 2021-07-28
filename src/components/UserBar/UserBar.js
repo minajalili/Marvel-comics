@@ -1,6 +1,7 @@
 import React from 'react'
 import { MDBCard, MDBCardTitle, MDBCardText, MDBContainer, MDBIcon } from 'mdbreact';
 import { connect } from 'react-redux'
+import './UserBar.css'
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
@@ -8,11 +9,11 @@ import 'mdbreact/dist/css/mdb.css';
 function UserBar(props) {
     return (
         <div  >
-            <MDBContainer style={{display:'flex', alignItems:'center', justifyContent:'center', width:'100%'}} >
-                <MDBCard className="card-body" style={{ width: "22rem", marginTop: "1rem" ,display:'flex', alignItems:'center', justifyContent:'center',  flexWrap:'wrap'}}>
+            <MDBContainer className="userbar__container">
+                <MDBCard className="card-body userbar__container__body">
                     <MDBCardTitle>
                         welcom   
-                        <span style={{fontWeight:'bold',padding:'5px'}}>{ props.userData.user }</span> !
+                        <span className="userbar__container--span">{ props.userData.user }</span> !
                     </MDBCardTitle>
                     <MDBCardText>
                         this is your pannel

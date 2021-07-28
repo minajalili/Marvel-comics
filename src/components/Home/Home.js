@@ -3,8 +3,9 @@ import React, { Component } from 'react'
 import axios from '../../API/AxiosUrls'
 import { connect } from 'react-redux'
 import * as actionsCreators from '../store/Actions/index'
-import { MDBContainer, MDBMedia, MDBCard } from 'mdbreact';
-
+import { MDBContainer, MDBMedia, MDBCard } from 'mdbreact'
+import { Modal, Button } from 'react-bootstrap'
+import './Home.css'
 import UserBar from '../UserBar/UserBar'
 
 
@@ -12,7 +13,9 @@ class Home extends Component {
     state={
         comicsRes:[],
         characterRes:[],
-        apiInfo:'characters/'
+        apiInfo:'characters/',
+        showerrorText:false,
+        errorText:''
     }
     componentDidMount(){
         const userRes = JSON.parse( localStorage.getItem('user'))
@@ -71,7 +74,10 @@ class Home extends Component {
             })
             
         })
-        .catch(error=>console.log(error))
+        .catch(error=>{
+            console.log(error)
+            this.setState({ showerrorText: true, errorText: error.message })
+        })
 
         
     }
@@ -84,40 +90,49 @@ class Home extends Component {
                 <UserBar/>
                 {
                     this.state.characterRes.map(item=>{
-                        return testHero(item.name, item.description, item.image)
+                        return heroPanel(item.name, item.description, item.image)
                     })
                 }
                 <div style={{display:'flex', alignItems:'center', justifyContent:'center', width:'100%', flexWrap:'wrap'}} >
                 {
                 this.state.comicsRes.map((item, i)=>{
-                        return testcomics(item.image, item.link, i)
+                        return displayComics(item.image, item.link, i)
                 })
                 }
                 </div>
-                
+                <Modal show={this.state.showerrorText} onHide={() => this.setState({ showerrorText: false })}>
+                <Modal.Header closeButton className="modalheader">
+                    <Modal.Title>Error</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="modalbody"> {this.state.errorText}</Modal.Body>
+                <Modal.Footer>
+                    <Button  className="btnM" onClick={() => this.setState({ showerrorText: false })}>
+                        close
+                    </Button>
+                </Modal.Footer>
+                </Modal>
                 
             </div>
         )
     }
 }
-const testcomics = (src,link, i)=>{
+const displayComics = (src,link, i)=>{
    return(   
-        <MDBCard key={i} style={{margin:'1rem', padding:'0.5rem'}}>
+        <MDBCard className="comics" key={i}>
             <a key={i+1000} target="_blank" href={link} rel="noreferrer">
-                <img key={i+2000} style={{width:'200px', height:'auto'}} src={src} alt="" />
+                <img className="comics--img"  key={i+2000} src={src} alt="" />
             </a>
-            
         </MDBCard>  
     )
 }
-const testHero =(name, detail, image)=>{
+const heroPanel =(name, detail, image)=>{
     return(
-        <MDBContainer key={name} style={{display:'flex', alignItems:'center', justifyContent:'center', width:'100%'}} >
-            <MDBCard className="card-body" style={{ margin: "1rem 0" }}>
-                <MDBMedia style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap'}}>
-                    <MDBMedia style={{width:'200px', height:'200px'}} object src={image} alt="" />
-                    <MDBMedia body style={{ textAlign: 'justify', padding: '0.5rem'}}>
-                        <MDBMedia heading style={{ textAlign: 'center',fontSize: '2rem', fontWeight: 'bold'}} >
+        <MDBContainer className="hero" key={name} >
+            <MDBCard className="card-body hero__body">
+                <MDBMedia className="hero__media">
+                    <MDBMedia className="hero--img" object src={image} alt="" />
+                    <MDBMedia className="hero__media__body" body>
+                        <MDBMedia className="hero__media--heading" heading  >
                             {name}
                         </MDBMedia>
                         {detail}
