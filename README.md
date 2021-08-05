@@ -1,8 +1,23 @@
 # Marvel
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-Marvel APP display the user's favorite hero comics by connecting to the Marvel API
-this app have 2 pages with login and home page. in home page you can see your hero description and some of comics of this hero
+
+Marvel APP display the user's favorite hero comics by connecting to the Marvel API.
+
+This app has 2 pages with a login and home page. In the home page you can see your hero description and some of comics of this hero.
+
+Before using this app make a ".env" in in your root folder(same place where you have your package.json) and **NOT in your src folder **
+Enter this bellow code and replace your public and privet api keys:
+#### .env　
+
+```code
+	REACT_APP_API_PUBLIC_KEY= 12345
+    
+    REACT_APP_API_PRIVET_KEY= 12345
+```
+
+**for login to app** go to the public folder and into User. jason file change or select some of users detail, then login
+
 
 ## some dependencies used in this app
 
