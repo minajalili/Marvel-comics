@@ -5,7 +5,7 @@ import * as Yup from "yup"
 import { Formik, Form } from "formik"
 import { connect } from 'react-redux'
 import * as actionsCreators from '../store/Actions/index'
-import FormikControl from './Form/FormikControl'
+import FormikControl from '../FormikControl/FormikControl'
 import { Modal, Button } from 'react-bootstrap'
 
 
@@ -95,7 +95,7 @@ class Login extends Component {
                     {
                         formik => {
                             return (
-                                <Form className="login__from" >
+                                <Form className="loginContainer" >
                                     <FormikControl
                                         control ="input"
                                         type="email"
@@ -109,7 +109,7 @@ class Login extends Component {
                                     <button 
                                         type="submit" 
                                         disabled={!formik.isValid}
-                                        className="login__form--btn" > sumbit </button>
+                                        className="submitButton" > sumbit </button>
                                 </Form>
                             )
                     }}

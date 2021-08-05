@@ -1,4 +1,4 @@
-.login__from{
+.loginContainer{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -6,18 +6,7 @@
     font-weight: bold;
     height: 100vh;
 }
-.login__from--input{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.3rem;
-    width: 100%;
-}
-.login__from--input label {
-    padding: 0.2rem;
-}
-
-.login__form--btn{
+.submitButton{
     width: 100%;
     margin: 1rem;
     color: #fff;
@@ -28,13 +17,10 @@
     cursor: pointer;
     transition: all 3ms ease-out;
 }
-.login__form--btn:hover{
+.submitButton:hover{
     background: #007bffb9;
     box-shadow: 4px 5px 8px #80808063;
 }
-.login__form--btn:disabled{
+.submitButton:disabled{
     background: rgb(172, 170, 170);
-}
-.error{
-    color: #dc3545;
 }
