@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import * as actionsCreators from '../store/Actions/index'
+import * as actionsCreators from '../../store/Actions/index'
 
-class logout extends Component {
+class Logout extends Component {
     state = { 
         redirect: false
     }
@@ -35,4 +35,4 @@ const mapDispatchToProps = dispatch => {
     };
 }
 
-export default connect(null, mapDispatchToProps)(logout);
+export default connect(null, mapDispatchToProps)(Logout);

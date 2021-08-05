@@ -4,7 +4,7 @@ import axios from '../../API/AxiosLogin'
 import * as Yup from "yup"
 import { Formik, Form } from "formik"
 import { connect } from 'react-redux'
-import * as actionsCreators from '../store/Actions/index'
+import * as actionsCreators from '../../store/Actions/index'
 import FormikControl from '../FormikControl/FormikControl'
 import { Modal, Button } from 'react-bootstrap'
 
