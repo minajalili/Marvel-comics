@@ -15,7 +15,9 @@ class Home extends Component {
         characterRes:[],
         apiInfo:'characters/',
         showerrorText:false,
-        errorText:''
+        errorText:'',
+        api_public_key:'',
+        api_privet_key:''
     }
     componentDidMount(){
         const userRes = JSON.parse( localStorage.getItem('user'))
@@ -31,9 +33,8 @@ class Home extends Component {
 
     fetchComics(url){
         //api authnetication
-
-        const api_public_key='1466077d22b028b09b51c4dcfef6a14e'
-        const api_privet_key='c5f99f06235c337aaf84ee5e6a3f20166389ee96'
+        const api_public_key= process.env.REACT_APP_API_PUBLIC_KEY
+        const api_privet_key= process.env.REACT_APP_API_PRIVET_KEY
         const ts =  Number(new Date());
         const hash = md5(ts+api_privet_key+api_public_key);
 
