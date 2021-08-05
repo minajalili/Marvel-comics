@@ -1,4 +1,5 @@
 import React from 'react';
+import './TextError.css'
 
 function TextError(props) {
     return (
